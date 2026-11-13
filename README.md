@@ -45,7 +45,7 @@ Steps:
 3. In Live, drag `Drone.amxd` onto a MIDI track.
 4. Click **read** and select the `formants.json` file.
 5. Press the toggle to start the patch.
-6. The patch loads its trained model from a fixed path on the author's computer: `read /Users/abhis/Desktop/Polyphony/regressionmodel1.data`. Edit that message so it points to `regressionmodel1.data` in your download folder.
+6. When it opens, the patch loads its trained model, `regressionmodel1.data`, through Max's search path. Keep it in the same folder as `Drone.amxd`. If the Max window says it cannot find the file, add that folder under **Options > File Preferences** and click **read regressionmodel1.data**.
 7. Play and hold a MIDI note. You should hear a drone. Move the dot on the XY pad with the mouse to change the sound.
 
 ## How it works
@@ -71,7 +71,7 @@ The XY pad sits on top. A regression model maps each pad position to ten sliders
 ## Ideas to try
 
 1. Add a new vowel. Look up the F1 and F2 formant frequencies for a vowel and add a slot to `formants.json`.
-2. Train your own mapping. Follow the training steps under "Technical details" and save a new model with the **write** message in `RegressionMapper.maxpat`.
+2. Train your own mapping. Follow the training steps under "Technical details" and save a new model with the **write** message in `RegressionMapper.maxpat`. It opens a dialog so you can choose where to save the file.
 3. Change how fast the randomizer moves. In `RegressionMapper.maxpat`, find the `metro 100` object (it fires every 100 milliseconds) and try slower or faster values.
 4. Change the envelope. `MonoSynth.maxpat` uses `adsr~` with attack, decay, sustain and release. Try a long attack so the drone fades in slowly.
 5. Ambitious: change how many harmonics are used. `MonoSynth.maxpat` has message boxes listing the odd harmonics (1 to 63) and even harmonics (2 to 64). Remove the higher ones and listen to the tone get darker.
@@ -180,7 +180,7 @@ Randomizers, driven by `metro` objects, were used to automate the movement of th
 
 This was an academic project from 2020 and is no longer being developed. Known problems:
 
-- The device loads and saves its regression model at fixed paths on the author's computer (`/Users/abhis/Desktop/Polyphony/`). You have to edit the **read** message before it will find the model.
+- The model used to load from a fixed path on the author's computer. In 2026 the patches were changed to find `regressionmodel1.data` through Max's search path (`absolutepath` and `conformpath`), and **write** now asks where to save. This change has not yet been tested in Max or Live.
 - The `ml.mulreg` externals are compiled files from 2020. They may not load in current versions of Max or on Apple Silicon Macs.
 - There is no screenshot or audio example yet.
 
@@ -188,10 +188,11 @@ This was an academic project from 2020 and is no longer being developed. Known p
 
 You can use, copy, change and share this project, as long as anything you share that is built from it is also released under GPL-3.0 with its source. See [LICENSE](LICENSE) (GNU General Public License v3.0).
 
-The compiled files in `externals/` were not written for this project and may carry their own licence.
+The compiled files in `externals/` (`ml.mulreg` and `ml.dtw`) are from ml.lib, which is released under the GNU General Public License, version 2 or later. Its source code is at [irllabs/ml-lib](https://github.com/irllabs/ml-lib).
 
 ## Credits
 
 - Built by Abhishek Shivakumar.
+- The `ml.mulreg` and `ml.dtw` objects in `externals/` are from [ml.lib](https://github.com/irllabs/ml-lib) by Ali Momeni and Jamie Bullock (copyright Carnegie Mellon University, 2013), built on Nick Gillian's [Gesture Recognition Toolkit](https://github.com/nickgillian/grt). Licence: GPL-2.0-or-later.
 - Built in [Max](https://cycling74.com/products/max) by Cycling '74 and [Ableton Live](https://www.ableton.com/en/live/).
 - The references above, especially the didgeridoo research from UNSW and Julius O. Smith III's books at CCRMA, Stanford.
